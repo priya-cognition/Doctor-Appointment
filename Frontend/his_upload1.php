@@ -340,8 +340,11 @@ function hide1()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select dimage from doctor where doctorID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($con, "SELECT dimage FROM doctor WHERE doctorID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['dimage'];
 		}
@@ -354,8 +357,11 @@ function hide1()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select dname from doctor where doctorID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($con, "SELECT dname FROM doctor WHERE doctorID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['dname']."</strong></font>";
 	}
@@ -414,15 +420,17 @@ function hide1()
 	$detail=$_POST['description'];
 	$date=$_POST['date'];
 	$time=$_POST['time'];
-	$qry="insert into history values('$pid','$did','$detail','$date','$time')";
-	$result=mysql_query($qry);
+	$stmt = mysqli_prepare($con, "INSERT INTO history VALUES(?,?,?,?,?)");
+	mysqli_stmt_bind_param($stmt, "sssss", $pid, $did, $detail, $date, $time);
+	mysqli_stmt_execute($stmt);
+	$result = $stmt;
 	if($result)
 	{
 		print "<b>History Submitted Successfully</b>";
 	}
 	else
 	{
-		print mysql_error();
+		print mysqli_error($con);
 	}
 	?>
     </div>

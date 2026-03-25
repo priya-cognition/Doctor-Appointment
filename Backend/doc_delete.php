@@ -146,15 +146,20 @@ function checkTime(i) {
   <?php
   include("connection.php");
   $did=$_GET['did'];
-  $qry=mysql_query("delete from docdays where doctorID='$did'");
-  $qry=mysql_query("delete from doctor where doctorID='$did'");
+  $stmt1 = mysqli_prepare($con, "DELETE FROM docdays WHERE doctorID=?");
+  mysqli_stmt_bind_param($stmt1, "s", $did);
+  mysqli_stmt_execute($stmt1);
+  $stmt2 = mysqli_prepare($con, "DELETE FROM doctor WHERE doctorID=?");
+  mysqli_stmt_bind_param($stmt2, "s", $did);
+  mysqli_stmt_execute($stmt2);
+  $qry = $stmt2;
 	  if($qry)
 	  {
 		  print "<h2><strong>Data deleted successfully</strong></h2>";
 	  }
 	  else
 	  {
-		  print mysql_error();
+		  print mysqli_error($con);
 	  }
   ?>  
   </div>

@@ -194,10 +194,10 @@ function checkTime(i) {
       <?php
       include("connection.php");
       $sql="SELECT * FROM patient";
-      $record=mysql_query($sql);
+      $record=mysqli_query($con, $sql);
       if($record)
       {
-        while($patient=mysql_fetch_assoc($record))
+        while($patient=mysqli_fetch_assoc($record))
         {
             print "<tr>";
             print "<td>".$patient['pname']."</td>";

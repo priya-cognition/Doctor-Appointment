@@ -187,15 +187,18 @@ function checkTime(i) {
 	  	include("connection.php");
 	  	move_uploaded_file($_FILES['image']['tmp_name'],"../Frontend/imge/{$_FILES['image']['name']}");
 		$imagef="{$_FILES['image']['name']}";
- 		$qry="INSERT INTO patient(pname,age,phone,patientID,address,gender,password,pimage) 	VALUES('$_POST[pname]','$_POST[age]','$_POST[phone]','$_POST[email]','$_POST[add]','$_POST[gender]','$_POST[pass]','$imagef')";
-		$result=mysql_query($qry);
+ 		$hashed_pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+		$stmt = mysqli_prepare($con, "INSERT INTO patient(pname,age,phone,patientID,address,gender,password,pimage) VALUES(?,?,?,?,?,?,?,?)");
+		mysqli_stmt_bind_param($stmt, "ssssssss", $_POST['pname'], $_POST['age'], $_POST['phone'], $_POST['email'], $_POST['add'], $_POST['gender'], $hashed_pass, $imagef);
+		mysqli_stmt_execute($stmt);
+		$result = $stmt;
 		if($result)
 	  	{
 	  	  	 print "<span><strong><h2>Patient Registered Successfully</h2></strong></span>";
       	}
       	else
       	{
-			  print mysql_error();
+			  print mysqli_error($con);
 			  
       	}
  ?>

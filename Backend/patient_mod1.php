@@ -173,8 +173,11 @@ function checkTime(i) {
           <input type="text" name="pname" id="textfield" required value="<?php 
 			include("connection.php");
 			$pid=$_GET['pid'];
-			$qry=mysql_query("select * from patient where patientID='$pid'");
-			while($row=mysql_fetch_array($qry))
+			$stmt = mysqli_prepare($con, "SELECT * FROM patient WHERE patientID=?");
+			mysqli_stmt_bind_param($stmt, "s", $pid);
+			mysqli_stmt_execute($stmt);
+			$qry = mysqli_stmt_get_result($stmt);
+			while($row=mysqli_fetch_array($qry))
 			{
 				print $row['pname'];
 			}			

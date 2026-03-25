@@ -196,8 +196,11 @@ function checkTime(i) {
           <input type="text" name="dname" id="dname" required value="<?php 
 			include("connection.php");
 			$did=$_GET['did'];
-			$qry=mysql_query("select * from doctor where doctorID='$did'");
-			while($row=mysql_fetch_array($qry))
+			$stmt = mysqli_prepare($con, "SELECT * FROM doctor WHERE doctorID=?");
+			mysqli_stmt_bind_param($stmt, "s", $did);
+			mysqli_stmt_execute($stmt);
+			$qry = mysqli_stmt_get_result($stmt);
+			while($row=mysqli_fetch_array($qry))
 			{
 				print $row['dname'];
 			}			

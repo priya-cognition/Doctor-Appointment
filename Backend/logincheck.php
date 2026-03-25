@@ -2,11 +2,14 @@
 include("connection.php");
 $uid=$_POST['uname'];
 $pass=$_POST['pass'];
-$qry=mysql_query("select * from admin");
+$stmt = mysqli_prepare($con, "SELECT * FROM admin WHERE Username=?");
+mysqli_stmt_bind_param($stmt, "s", $uid);
+mysqli_stmt_execute($stmt);
+$qry = mysqli_stmt_get_result($stmt);
 $flag=0;
-while($row=mysql_fetch_array($qry))
+while($row=mysqli_fetch_array($qry))
 {
-	if($uid==$row['Username'] && $pass==$row['Password'])
+	if($uid==$row['Username'] && password_verify($pass, $row['Password']))
 	{
 		$flag=1;
 		break;
