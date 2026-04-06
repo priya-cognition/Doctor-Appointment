@@ -322,8 +322,11 @@ function hide()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select pimage from patient where patientID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($conn, "SELECT pimage FROM patient WHERE patientID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$image=$row['pimage'];
 		}
@@ -336,8 +339,11 @@ function hide()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select pname from patient where patientID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($conn, "SELECT pname FROM patient WHERE patientID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['pname']."</strong></font>";
 	}
@@ -388,23 +394,27 @@ $date=strtotime("$days");
 $time=$_POST['time'];
 $date1=date("Y-m-d",$date);
 $count=0;
-$r=mysql_query("select * from appointment where date='$date1' and doctorID='$did'");
-while($row=mysql_fetch_row($r))
+$stmt_app = mysqli_prepare($conn, "SELECT * FROM appointment WHERE date=? AND doctorID=?");
+mysqli_stmt_bind_param($stmt_app, "ss", $date1, $did);
+mysqli_stmt_execute($stmt_app);
+$r = mysqli_stmt_get_result($stmt_app);
+while($row=mysqli_fetch_row($r))
 {
 	
 	$count++;
 }
 $count++;
 $appno="Appno".$count;
-$qry="insert into appointment values('$pid','$did','$appno','$date1','$time')";
-$result=mysql_query($qry);
+$stmt_ins = mysqli_prepare($conn, "INSERT INTO appointment VALUES(?,?,?,?,?)");
+mysqli_stmt_bind_param($stmt_ins, "sssss", $pid, $did, $appno, $date1, $time);
+$result = mysqli_stmt_execute($stmt_ins);
 if($result)
 {
 	print "<h3><font color='#000'>Appointment registered - Your appointment no. ".$appno."</font></h3>";
 }
 else
 {
-	print mysql_error();
+	print mysqli_error($conn);
 }
 ?>
 </div>

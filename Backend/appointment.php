@@ -208,10 +208,10 @@ function checkTime(i) {
       <tr>
       <?php
 	   include("connection.php");
-	   $qry1=mysql_query("select patient.pname from patient,appointment where patient.patientID=appointment.patientID");
-	   $qry2=mysql_query("select doctor.dname from doctor,appointment where doctor.doctorID=appointment.doctorID");
-	   $qry3=mysql_query("select * from appointment");
-	   while(($patient=mysql_fetch_array($qry1)) && ($doctor=mysql_fetch_array($qry2)) && ($result=mysql_fetch_array($qry3)))
+	   $qry1=mysqli_query($conn, "select patient.pname from patient,appointment where patient.patientID=appointment.patientID");
+	   $qry2=mysqli_query($conn, "select doctor.dname from doctor,appointment where doctor.doctorID=appointment.doctorID");
+	   $qry3=mysqli_query($conn, "select * from appointment");
+	   while(($patient=mysqli_fetch_array($qry1)) && ($doctor=mysqli_fetch_array($qry2)) && ($result=mysqli_fetch_array($qry3)))
 	   {
 			print "<tr height='39'>";
 			print "<td>".$patient['pname']."</td>";

@@ -2,9 +2,9 @@
 include("connection.php");
 $uid=$_POST['email'];
 $pass=$_POST['pass'];
-$qry=mysql_query("select * from doctor");
+$qry=mysqli_query($conn, "select * from doctor");
 $flag=0;
-while($row=mysql_fetch_array($qry))
+while($row=mysqli_fetch_array($qry))
 {
 	if($uid==$row['doctorID'] && $pass==$row['password'])
 	{

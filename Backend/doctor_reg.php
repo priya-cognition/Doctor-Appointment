@@ -169,15 +169,16 @@ function checkTime(i) {
   	$did=$_POST['email'];
   	move_uploaded_file($_FILES['image']['tmp_name'],"../Frontend/imge/{$_FILES['image']['name']}");
 	$imagef="{$_FILES['image']['name']}";
-  	$qry="INSERT INTO doctor(doctorID,dname,password,phoneno,address,gender,specilist,dimage) VALUES('$_POST[email]','$_POST[dname]','$_POST[pass]','$_POST[phone]','$_POST[add]','$_POST[gender]','$_POST[spec]','$imagef')";
-  	$result=mysql_query($qry);
+  	$stmt = mysqli_prepare($conn, "INSERT INTO doctor(doctorID,dname,password,phoneno,address,gender,specilist,dimage) VALUES(?,?,?,?,?,?,?,?)");
+  	mysqli_stmt_bind_param($stmt, "ssssssss", $_POST['email'], $_POST['dname'], $_POST['pass'], $_POST['phone'], $_POST['add'], $_POST['gender'], $_POST['spec'], $imagef);
+  	$result = mysqli_stmt_execute($stmt);
   	if($result)
   	{
     	print "<strong><h2 align='center'>Please Select date and time</h2></strong>";
   	}
   	else
   	{
-    	print mysql_error();
+    	print mysqli_error($conn);
   	}
   ?>
   </div>

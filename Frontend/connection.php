@@ -1,8 +1,6 @@
 <?php
-$con=mysql_connect("localhost","root","comrade");
-if(!$con)
-{
-	die('Could not connect: ' . mysql_error());
+$conn = mysqli_connect("localhost", "root", "comrade", "hospital");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
 }
-mysql_select_db("hospital",$con);
 ?>

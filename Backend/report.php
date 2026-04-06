@@ -173,17 +173,17 @@ function checkTime(i) {
             <?php 
 			include("connection.php");
 			$qry="select * from patient";
-			$result=mysql_query($qry);
+			$result=mysqli_query($conn, $qry);
 			if($result)
 			{
-				while($row=mysql_fetch_row($result))
+				while($row=mysqli_fetch_row($result))
 				{
 					print "<option value='".$row[0]."'>".$row[2]."</option>";
 				}
 			}
 			else
 			{
-				print mysql_error();
+				print mysqli_error($conn);
 			}
 			?>
           </select></td>

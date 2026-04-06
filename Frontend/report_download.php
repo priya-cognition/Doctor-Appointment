@@ -321,8 +321,11 @@ function hide()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select pimage from patient where patientID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($conn, "SELECT pimage FROM patient WHERE patientID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['pimage'];
 		}
@@ -335,8 +338,11 @@ function hide()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select pname from patient where patientID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($conn, "SELECT pname FROM patient WHERE patientID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['pname']."</strong></font>";
 	}
@@ -389,10 +395,13 @@ function hide()
       	<?php
 			include("connection.php");
 			$pid=$_SESSION['id'];
-			$qry=mysql_query("select * from report where patientID='$pid'");
+			$stmt_rpt = mysqli_prepare($conn, "SELECT * FROM report WHERE patientID=?");
+			mysqli_stmt_bind_param($stmt_rpt, "s", $pid);
+			mysqli_stmt_execute($stmt_rpt);
+			$qry = mysqli_stmt_get_result($stmt_rpt);
 			if($qry)
 			{
-					while($row=mysql_fetch_array($qry))
+					while($row=mysqli_fetch_array($qry))
 					{
 						print "<tr height='39'>";
 						print "<td>".$row['patientID']."</td>";

@@ -1,0 +1,7 @@
+{
+    "name": "priya-cognition/doctor-appointment",
+    "description": "Hospital Management System - Doctor Appointment",
+    "require": {
+        "php": ">=8.0"
+    }
+}

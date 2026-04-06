@@ -383,8 +383,11 @@ function time1(str)
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select pimage from patient where patientID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($conn, "SELECT pimage FROM patient WHERE patientID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$image=$row['pimage'];
 		}
@@ -397,8 +400,11 @@ function time1(str)
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select pname from patient where patientID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($conn, "SELECT pname FROM patient WHERE patientID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['pname']."</strong></font>";
 	}
@@ -454,17 +460,17 @@ function time1(str)
           <?php 
 			include("connection.php");
 			$qry="select * from doctor";
-			$result=mysql_query($qry);
+			$result=mysqli_query($conn, $qry);
 			if($result)
 			{
-				while($row=mysql_fetch_row($result))
+				while($row=mysqli_fetch_row($result))
 				{
 					print "<option value='".$row[0]."'>".$row[1]."</option>";
 				}
 			}
 			else
 			{
-				print mysql_error();
+				print mysqli_error($conn);
 			}
 			?>
           </select></td>

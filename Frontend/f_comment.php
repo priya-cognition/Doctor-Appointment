@@ -184,15 +184,16 @@ a:link
   $name=$_POST['name'];
   $email=$_POST['email'];
   $com=$_POST['comment'];
-  $qry="insert into feedback values('$name','$email','$com')";
-  $result=mysql_query($qry);
+  $stmt = mysqli_prepare($conn, "INSERT INTO feedback VALUES(?,?,?)");
+  mysqli_stmt_bind_param($stmt, "sss", $name, $email, $com);
+  $result = mysqli_stmt_execute($stmt);
   if($result)
   {
 	  print "<div align='center'><strong style='color:#000;'>Thanks for your feedback</strong></div>";
   }
   else
   {
-	print mysql_error();  
+	print mysqli_error($conn);  
   }
   ?>
   </div>

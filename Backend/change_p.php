@@ -207,15 +207,17 @@ function checkTime(i) {
   </div>
   <div id="apDiv16">
   <?php
-  $con=mysql_connect("localhost","root","comrade");
-  mysql_select_db("hospital",$con);
+  include("connection.php");
   $a=$_POST['o_pass'];
   $b=$_POST['new_pass'];
   $c=$_POST['conf_pass'];
   $uid=$_SESSION['id'];
-  $qry=mysql_query("select * from admin where Username='$uid'");
+  $stmt = mysqli_prepare($conn, "SELECT * FROM admin WHERE Username=?");
+  mysqli_stmt_bind_param($stmt, "s", $uid);
+  mysqli_stmt_execute($stmt);
+  $qry = mysqli_stmt_get_result($stmt);
   $flag=0;
-while($row=mysql_fetch_array($qry))
+while($row=mysqli_fetch_array($qry))
 {
 	if($uid==$row['Username'] && $a==$row['Password'])
 	{
@@ -225,7 +227,9 @@ while($row=mysql_fetch_array($qry))
 }
 if($flag==1)
 {
-	$qry1=mysql_query("update admin set Password='$b' where Username='$uid'");
+	$stmt2 = mysqli_prepare($conn, "UPDATE admin SET Password=? WHERE Username=?");
+	mysqli_stmt_bind_param($stmt2, "ss", $b, $uid);
+	mysqli_stmt_execute($stmt2);
 	print "<b>Password changed successfully</b>";
 }
 else

@@ -190,10 +190,10 @@ function checkTime(i) {
       <?php
       include("connection.php");
       $sql="SELECT * FROM doctor";
-      $record=mysql_query($sql);
+      $record=mysqli_query($conn, $sql);
       if($record)
       {
-        while($doctor=mysql_fetch_assoc($record))
+        while($doctor=mysqli_fetch_assoc($record))
         {
             print "<tr>";
             print "<td>".$doctor['dname']."</td>";
