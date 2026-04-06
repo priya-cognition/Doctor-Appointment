@@ -169,14 +169,16 @@ function checkTime(i) {
   $password=$_POST['pass'];
   move_uploaded_file($_FILES['image']['tmp_name'],"../Frontend/imge/{$_FILES['image']['name']}");
   $imagef="{$_FILES['image']['name']}";
-  $qry=mysql_query("update patient set pname='$pname',phone='$phone',address='$address',password='$password', pimage='$imagef'  where patientID='$pid'");
+  $stmt = mysqli_prepare($conn, "UPDATE patient SET pname=?, phone=?, address=?, password=?, pimage=? WHERE patientID=?");
+  mysqli_stmt_bind_param($stmt, "ssssss", $pname, $phone, $address, $password, $imagef, $pid);
+  $qry = mysqli_stmt_execute($stmt);
   if($qry)
 	  {
 		  print "<h2><strong>Patient data updated successfully</strong></h2>";
 	  }
 	  else
 	  {
-		  print mysql_error();
+		  print mysqli_error($conn);
 	  }
   ?>  
     </div>

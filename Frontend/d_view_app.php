@@ -353,8 +353,11 @@ function hide1()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select dimage from doctor where doctorID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($conn, "SELECT dimage FROM doctor WHERE doctorID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['dimage'];
 		}
@@ -367,8 +370,11 @@ function hide1()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select dname from doctor where doctorID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($conn, "SELECT dname FROM doctor WHERE doctorID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['dname']."</strong></font>";
 	}
@@ -431,13 +437,16 @@ function hide1()
         <?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry1=mysql_query("select * from doctor where doctorID='$uid'");
-		while($row=mysql_fetch_array($qry1))
+		$stmt_d = mysqli_prepare($conn, "SELECT * FROM doctor WHERE doctorID=?");
+		mysqli_stmt_bind_param($stmt_d, "s", $uid);
+		mysqli_stmt_execute($stmt_d);
+		$qry1 = mysqli_stmt_get_result($stmt_d);
+		while($row=mysqli_fetch_array($qry1))
 		{
-		$qry2=mysql_query("select * from patient natural join appointment where patient.patientID=appointment.patientID");
+		$qry2=mysqli_query($conn, "select * from patient natural join appointment where patient.patientID=appointment.patientID");
 		if($qry2)
 		{
-			while($doctor=mysql_fetch_assoc($qry2))
+			while($doctor=mysqli_fetch_assoc($qry2))
 			{
 				if($uid==$doctor['doctorID'])
 				{

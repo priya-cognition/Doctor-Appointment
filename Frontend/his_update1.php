@@ -419,8 +419,11 @@ function hide1()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select dimage from doctor where doctorID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($conn, "SELECT dimage FROM doctor WHERE doctorID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['dimage'];
 		}
@@ -433,8 +436,11 @@ function hide1()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select dname from doctor where doctorID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($conn, "SELECT dname FROM doctor WHERE doctorID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['dname']."</strong></font>";
 	}
@@ -497,17 +503,20 @@ function hide1()
           <input type="text" name="patient" id="patient" value="<?php
 		  include("connection.php");
 		  $p_id=$_GET['pid'];
-		  $qry=mysql_query("select * from patient where patientID='$p_id'");
+		  $stmt_p = mysqli_prepare($conn, "SELECT * FROM patient WHERE patientID=?");
+		  mysqli_stmt_bind_param($stmt_p, "s", $p_id);
+		  mysqli_stmt_execute($stmt_p);
+		  $qry = mysqli_stmt_get_result($stmt_p);
 		  if($qry)
 		  {
-		  	while($res=mysql_fetch_array($qry))
+		  	while($res=mysqli_fetch_array($qry))
 			{
 				print $res['pname'];
 			}
 		  }
 		  else
 		  {
-			  print mysql_error();
+			  print mysqli_error($conn);
 		  }
 		  
 		   ?>" onFocus="blur()"><input type="hidden" name="h1" value="<?php print $pid=$_GET['pid']; ?>"> </td>
