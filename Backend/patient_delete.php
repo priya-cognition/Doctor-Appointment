@@ -147,14 +147,16 @@ function checkTime(i) {
   <?php
   include("connection.php");
   $p_id=$_GET['pid'];
-  $qry=mysql_query("delete from patient where patientID='$p_id'");
+  $stmt = mysqli_prepare($con, "DELETE FROM patient WHERE patientID=?");
+  mysqli_stmt_bind_param($stmt, "s", $p_id);
+  $qry = mysqli_stmt_execute($stmt);
 	  if($qry)
 	  {
 		  print "<h2><strong>Data deleted successfully</strong></h2>";
 	  }
 	  else
 	  {
-		  print mysql_error();
+		  print mysqli_error($con);
 	  }
   ?>  
   </div>

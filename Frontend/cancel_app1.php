@@ -323,8 +323,11 @@ function hide()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select pimage from patient where patientID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($con, "SELECT pimage FROM patient WHERE patientID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['pimage'];
 		}
@@ -337,8 +340,11 @@ function hide()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select pname from patient where patientID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($con, "SELECT pname FROM patient WHERE patientID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['pname']."</strong></font>";
 	}
@@ -384,14 +390,16 @@ function hide()
   $did1=$_POST['h2'];
   $appno1=$_POST['h1'];
   $date1=$_POST['h3'];
-  $qry=mysql_query("delete from appointment where doctorID='$did1' and date='$date1'");
+  $stmt = mysqli_prepare($con, "DELETE FROM appointment WHERE doctorID=? AND date=?");
+  mysqli_stmt_bind_param($stmt, "ss", $did1, $date1);
+  $qry = mysqli_stmt_execute($stmt);
 	  if($qry)
 	  {
 		  print "<h2><strong style='color:#000;'>Appointment Canceled Successfully</strong></h2>";
 	  }
 	  else
 	  {
-		  print mysql_error();
+		  print mysqli_error($con);
 	  }
  ?>
 </div>

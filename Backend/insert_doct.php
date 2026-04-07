@@ -182,8 +182,9 @@ if(isset($_POST["Submit"]))
 	
 	for($i=0;$i<sizeof($checkbox);$i++)
 	{
-		$qry="insert into docdays  values ('$did','".$checkbox[$i]."','$_POST[to]')";
-		mysql_query($qry) or die(mysql_error());
+		$stmt = mysqli_prepare($con, "INSERT INTO docdays VALUES (?,?,?)");
+		mysqli_stmt_bind_param($stmt, "sss", $did, $checkbox[$i], $_POST['to']);
+		mysqli_stmt_execute($stmt) or die(mysqli_error($con));
 	}
 	print "<h2><strong>Doctor added Successfully</strong></h2>";
 }

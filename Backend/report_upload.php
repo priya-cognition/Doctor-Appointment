@@ -172,8 +172,11 @@ function checkTime(i) {
 	$date1=$_POST['date'];
 	$time=$_POST['time'];
 	$count=0;
-	$r=mysql_query("select * from report where date='$date1' and patientID='$pid'");
-	while($row=mysql_fetch_row($r))
+	$stmt_r = mysqli_prepare($con, "SELECT * FROM report WHERE date=? AND patientID=?");
+	mysqli_stmt_bind_param($stmt_r, "ss", $date1, $pid);
+	mysqli_stmt_execute($stmt_r);
+	$r = mysqli_stmt_get_result($stmt_r);
+	while($row=mysqli_fetch_row($r))
 	{
 		$count++;
 	}
@@ -181,8 +184,9 @@ function checkTime(i) {
 	$rid="Report no.".$count;
 	move_uploaded_file($_FILES['reportfile']['tmp_name'],"reportfile/{$_FILES['reportfile']['name']}");
 	$docfile="{$_FILES['reportfile']['name']}";
-	$qry="insert into report values('$rid','$pid','$date1','$time','$docfile')";
-	$result=mysql_query($qry);
+	$stmt_ins = mysqli_prepare($con, "INSERT INTO report VALUES(?,?,?,?,?)");
+	mysqli_stmt_bind_param($stmt_ins, "sssss", $rid, $pid, $date1, $time, $docfile);
+	$result = mysqli_stmt_execute($stmt_ins);
 	
 	if($result)
 	{
@@ -190,7 +194,7 @@ function checkTime(i) {
 	}
 	else
 	{
-		print mysql_error();
+		print mysqli_error($con);
 	}
 	?>
     </div>

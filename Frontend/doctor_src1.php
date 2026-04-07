@@ -394,8 +394,11 @@ function hide()
   	<?php
 		include("connection.php");
 		$uid=$_SESSION['id'];
-		$qry=mysql_query("select pimage from patient where patientID='$uid'");
-		while($row=mysql_fetch_array($qry))
+		$stmt_img = mysqli_prepare($con, "SELECT pimage FROM patient WHERE patientID=?");
+		mysqli_stmt_bind_param($stmt_img, "s", $uid);
+		mysqli_stmt_execute($stmt_img);
+		$qry = mysqli_stmt_get_result($stmt_img);
+		while($row=mysqli_fetch_array($qry))
 		{
 			$img=$row['pimage'];
 		}
@@ -408,8 +411,11 @@ function hide()
   <?php
  	include("connection.php");
 	$uid=$_SESSION['id'];
-	$qry=mysql_query("select pname from patient where patientID='$uid'");
-	while($row=mysql_fetch_array($qry))
+	$stmt_name = mysqli_prepare($con, "SELECT pname FROM patient WHERE patientID=?");
+	mysqli_stmt_bind_param($stmt_name, "s", $uid);
+	mysqli_stmt_execute($stmt_name);
+	$qry = mysqli_stmt_get_result($stmt_name);
+	while($row=mysqli_fetch_array($qry))
 	{
 		print "<font style='font-size:22px;'><strong>".$row['pname']."</strong></font>";
 	}
@@ -463,17 +469,17 @@ function hide()
           <?php 
 			include("connection.php");
 			$qry="select specilist from doctor group by specilist";
-			$result=mysql_query($qry);
+			$result=mysqli_query($con, $qry);
 			if($result)
 			{
-				while($row=mysql_fetch_row($result))
+				while($row=mysqli_fetch_row($result))
 				{
 					print "<option value='".$row[0]."'>".$row[0]."</option>";
 				}
 			}
 			else
 			{
-				print mysql_error();
+				print mysqli_error($con);
 			}
 			?>
           </select></div></td>
@@ -494,11 +500,13 @@ function hide()
        <?php
 		include("connection.php");
 		$select=$_POST['doctor'];
-		$qry="select * from doctor where specilist='$select'";
-		$result=mysql_query($qry);
+		$stmt_doc = mysqli_prepare($con, "select * from doctor where specilist=?");
+		mysqli_stmt_bind_param($stmt_doc, "s", $select);
+		mysqli_stmt_execute($stmt_doc);
+		$result = mysqli_stmt_get_result($stmt_doc);
 		if($result)
 		{
-			while($doctor=mysql_fetch_assoc($result))
+			while($doctor=mysqli_fetch_assoc($result))
 			{
 				print "<tr height='39'>";
 				print "<td>".$doctor['dname']."</td>";

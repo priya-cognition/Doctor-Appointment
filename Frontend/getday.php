@@ -3,10 +3,10 @@
 	include("connection.php");
  	print "<select name='days'  onChange='time1(this.value)'>";
  	$qry="select * from docdays group by days";
-	$result=mysql_query($qry);
+	$result=mysqli_query($con, $qry);
 	if($result)
 	 {
- 		while($row=mysql_fetch_array($result))
+ 		while($row=mysqli_fetch_array($result))
  		{
 			print "<option value='".$row['days']."'>";
 	 		print $row['days'];

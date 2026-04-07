@@ -2,11 +2,14 @@
 include("connection.php");
 $uid=$_POST['email'];
 $pass=$_POST['pass'];
-$qry=mysql_query("select * from patient");
+$stmt = mysqli_prepare($con, "SELECT * FROM patient WHERE patientID=?");
+mysqli_stmt_bind_param($stmt, "s", $uid);
+mysqli_stmt_execute($stmt);
+$qry = mysqli_stmt_get_result($stmt);
 $flag=0;
-while($row=mysql_fetch_array($qry))
+while($row=mysqli_fetch_array($qry))
 {
-	if($uid==$row['patientID'] && $pass==$row['password'])
+	if($uid==$row['patientID'] && password_verify($pass, $row['password']))
 	{
 		$flag=1;
 		break;
