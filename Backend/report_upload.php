@@ -186,8 +186,7 @@ function checkTime(i) {
 	$docfile="{$_FILES['reportfile']['name']}";
 	$stmt_ins = mysqli_prepare($con, "INSERT INTO report VALUES(?,?,?,?,?)");
 	mysqli_stmt_bind_param($stmt_ins, "sssss", $rid, $pid, $date1, $time, $docfile);
-	mysqli_stmt_execute($stmt_ins);
-	$result = $stmt_ins;
+	$result = mysqli_stmt_execute($stmt_ins);
 	
 	if($result)
 	{

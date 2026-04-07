@@ -433,8 +433,7 @@ function hide1()
   $p_id=$_GET['pid'];
   $stmt = mysqli_prepare($con, "DELETE FROM history WHERE patientID=?");
   mysqli_stmt_bind_param($stmt, "s", $p_id);
-  mysqli_stmt_execute($stmt);
-  $qry = $stmt;
+  $qry = mysqli_stmt_execute($stmt);
 	  if($qry)
 	  {
 		  print "<h2><strong>Patient history deleted successfully</strong></h2>";

@@ -306,8 +306,7 @@ border-radius: 4px;
 		$hashed_pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
 		$stmt = mysqli_prepare($con, "INSERT INTO patient(pname,age,phone,patientID,address,gender,password,pimage) VALUES(?,?,?,?,?,?,?,?)");
 		mysqli_stmt_bind_param($stmt, "ssssssss", $_POST['pname'], $_POST['age'], $_POST['phone'], $_POST['email'], $_POST['add'], $_POST['gender'], $hashed_pass, $imagef);
-		mysqli_stmt_execute($stmt);
-		$result = $stmt;
+		$result = mysqli_stmt_execute($stmt);
 		if($result)
 	  	{
 	  	  	 print "<span><strong><h2><font style='color:#000;'>Thank you for Registering with us!</font></h2></strong></span>";

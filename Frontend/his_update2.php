@@ -423,8 +423,7 @@ function hide1()
 	$time1=$_POST['time'];
 	$stmt = mysqli_prepare($con, "UPDATE history SET details=?,date=?,time=? WHERE patientID=? AND doctorID=?");
 	mysqli_stmt_bind_param($stmt, "sssss", $detail, $date1, $time1, $pid1, $did);
-	mysqli_stmt_execute($stmt);
-	$qry = $stmt;
+	$qry = mysqli_stmt_execute($stmt);
 	if($qry)
 	{
 		print "<b>History Updated Successfully</b>";

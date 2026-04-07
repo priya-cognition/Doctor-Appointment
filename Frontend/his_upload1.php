@@ -422,8 +422,7 @@ function hide1()
 	$time=$_POST['time'];
 	$stmt = mysqli_prepare($con, "INSERT INTO history VALUES(?,?,?,?,?)");
 	mysqli_stmt_bind_param($stmt, "sssss", $pid, $did, $detail, $date, $time);
-	mysqli_stmt_execute($stmt);
-	$result = $stmt;
+	$result = mysqli_stmt_execute($stmt);
 	if($result)
 	{
 		print "<b>History Submitted Successfully</b>";

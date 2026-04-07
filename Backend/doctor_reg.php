@@ -172,8 +172,7 @@ function checkTime(i) {
   	$hashed_pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
   	$stmt = mysqli_prepare($con, "INSERT INTO doctor(doctorID,dname,password,phoneno,address,gender,specilist,dimage) VALUES(?,?,?,?,?,?,?,?)");
   	mysqli_stmt_bind_param($stmt, "ssssssss", $_POST['email'], $_POST['dname'], $hashed_pass, $_POST['phone'], $_POST['add'], $_POST['gender'], $_POST['spec'], $imagef);
-  	mysqli_stmt_execute($stmt);
-  	$result = $stmt;
+  	$result = mysqli_stmt_execute($stmt);
   	if($result)
   	{
     	print "<strong><h2 align='center'>Please Select date and time</h2></strong>";

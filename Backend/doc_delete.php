@@ -151,8 +151,7 @@ function checkTime(i) {
   mysqli_stmt_execute($stmt1);
   $stmt2 = mysqli_prepare($con, "DELETE FROM doctor WHERE doctorID=?");
   mysqli_stmt_bind_param($stmt2, "s", $did);
-  mysqli_stmt_execute($stmt2);
-  $qry = $stmt2;
+  $qry = mysqli_stmt_execute($stmt2);
 	  if($qry)
 	  {
 		  print "<h2><strong>Data deleted successfully</strong></h2>";

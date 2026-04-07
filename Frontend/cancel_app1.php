@@ -392,8 +392,7 @@ function hide()
   $date1=$_POST['h3'];
   $stmt = mysqli_prepare($con, "DELETE FROM appointment WHERE doctorID=? AND date=?");
   mysqli_stmt_bind_param($stmt, "ss", $did1, $date1);
-  mysqli_stmt_execute($stmt);
-  $qry = $stmt;
+  $qry = mysqli_stmt_execute($stmt);
 	  if($qry)
 	  {
 		  print "<h2><strong style='color:#000;'>Appointment Canceled Successfully</strong></h2>";

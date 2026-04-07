@@ -172,8 +172,7 @@ function checkTime(i) {
   $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
   $stmt = mysqli_prepare($con, "UPDATE patient SET pname=?,phone=?,address=?,password=?,pimage=? WHERE patientID=?");
   mysqli_stmt_bind_param($stmt, "ssssss", $pname, $phone, $address, $hashed_pass, $imagef, $pid);
-  mysqli_stmt_execute($stmt);
-  $qry = $stmt;
+  $qry = mysqli_stmt_execute($stmt);
   if($qry)
 	  {
 		  print "<h2><strong>Patient data updated successfully</strong></h2>";
