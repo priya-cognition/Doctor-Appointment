@@ -500,8 +500,10 @@ function hide()
        <?php
 		include("connection.php");
 		$select=$_POST['doctor'];
-		$qry="select * from doctor where specilist='$select'";
-		$result=mysqli_query($con, $qry);
+		$stmt_doc = mysqli_prepare($con, "select * from doctor where specilist=?");
+		mysqli_stmt_bind_param($stmt_doc, "s", $select);
+		mysqli_stmt_execute($stmt_doc);
+		$result = mysqli_stmt_get_result($stmt_doc);
 		if($result)
 		{
 			while($doctor=mysqli_fetch_assoc($result))
